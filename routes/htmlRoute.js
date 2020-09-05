@@ -3,7 +3,8 @@
 // We need to include the path package to get the correct file path for our html
 // ===============================================================================
 var path = require("path");
-
+var express = require("express");
+var router = express.Router()
 
 // ===============================================================================
 // ROUTING
@@ -28,3 +29,4 @@ module.exports = function(app) {
     res.sendFile(path.join(__dirname, "../public/index.html"));
   });
 };
+module.exports = router;
