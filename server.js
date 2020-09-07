@@ -1,25 +1,25 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-const apiRoutes = require("./routes/apiRoute.js");
-const htmlRoutes = require("./routes/htmlRoute.js")
-
-const PORT = process.env.PORT || 3003;
 
 const app = express();
-app.use(morgan("dev"));
+const PORT = process.env.PORT || 3005;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 app.use(express.static("public"));
+app.use(morgan("tiny"))
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useUnifiedTopology: true
 });
 
-app.use(htmlRoutes);
-app.use(apiRoutes);
-app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}!`);
+require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
+
+app.listen(PORT, function () {
+    console.log("==> Listening on port %s. Visit http://localhost:%s in your browser", PORT, PORT)
 });
